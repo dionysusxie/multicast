@@ -11,7 +11,7 @@ OBJECT_FILES_FOR_RECEIVER_BOOST = receiver_boost.o
 OBJECT_FILES_FOR_SENDER_RAW = sender_raw.o
 OBJECT_FILES_FOR_RECEIVER_02 = receiver_raw.o
 
-OBJECT_FILES_COMMON =
+OBJECT_FILES_COMMON = NetHelper.o
 
 LIB_DIR = /usr/local/lib
 
