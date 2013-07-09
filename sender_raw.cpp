@@ -6,6 +6,10 @@
  */
 
 /* Send Multicast Datagram code example. */
+#include <iostream>
+#include <sstream>
+#include <boost/assert.hpp>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -14,10 +18,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <iostream>
-#include <sstream>
+#include <netdb.h>
+
+#include "NetHelper.h"
 
 using namespace std;
+using namespace boost;
 
 
 struct in_addr localInterface;
@@ -29,10 +35,27 @@ const int datalen = sizeof(databuf);
 
 const char*     MULTICAST_ADDR = "226.1.1.1";
 const uint16_t  MULTICAST_PORT = 4321;
-const char*     LOCAL_ADDR = "10.200.39.37";
 
 
 int main(int argc, char *argv[]) {
+    string LOCAL_ADDR;
+
+    // get default net interface and its ip address
+    {
+        const string def_interface = allyes::NetHelper::getDefaultNetInterface();
+        cout << "Default net interface: " << def_interface << endl;
+
+        vector<string> ip4_addr = allyes::NetHelper::getIP4Address(def_interface);
+        cout << "Its IP4 addr: ";
+        for (vector<string>::const_iterator it = ip4_addr.begin(); it != ip4_addr.end(); it++) {
+            cout << *it << " - ";
+        }
+        cout << endl;
+
+        BOOST_ASSERT_MSG(!(ip4_addr.empty()), "Can't find the IP address of default net interface!");
+        LOCAL_ADDR = ip4_addr[0];
+    }
+
 
     // show some basic infos
     {
@@ -75,7 +98,7 @@ int main(int argc, char *argv[]) {
     /* Set local interface for outbound multicast datagrams. */
     /* The IP address specified must be associated with a local, */
     /* multicast capable interface. */
-    localInterface.s_addr = inet_addr(LOCAL_ADDR);
+    localInterface.s_addr = inet_addr(LOCAL_ADDR.c_str());
     if (setsockopt(sd, IPPROTO_IP, IP_MULTICAST_IF, (char *) &localInterface,
             sizeof(localInterface)) < 0) {
         perror("Setting local interface error");

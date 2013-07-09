@@ -1,6 +1,8 @@
 
 /* Receiver/client multicast Datagram example. */
 
+#include <iostream>
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -9,7 +11,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <iostream>
+
+#include "NetHelper.h"
 
 using namespace std;
 
@@ -22,11 +25,10 @@ char databuf[1024];
 
 const uint16_t PORT = 4321;
 const char *MULTICAST_ADDR = "226.1.1.1";
-const char *LOCAL_ADDR = "10.200.39.37";
-//const char *LOCAL_ADDR = "127.0.0.1";
 
 
 int main(int argc, char *argv[]) {
+    const string LOCAL_ADDR = allyes::NetHelper::getIP4AddrOfDefInterface();
 
     // show some basic info
     {
@@ -80,7 +82,7 @@ int main(int argc, char *argv[]) {
     /* called for each local interface over which the multicast */
     /* datagrams are to be received. */
     group.imr_multiaddr.s_addr = inet_addr(MULTICAST_ADDR);
-    group.imr_interface.s_addr = inet_addr(LOCAL_ADDR);
+    group.imr_interface.s_addr = inet_addr(LOCAL_ADDR.c_str());
 
     if (setsockopt(sd, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char *) &group,
             sizeof(group)) < 0) {
