@@ -17,6 +17,7 @@ class NetHelper {
 public:
     static std::string getDefaultNetInterface();
     static std::vector<std::string> getIP4Address(const std::string& net_interface);
+    static std::string getIP4AddrOfDefInterface();
 public:
     virtual ~NetHelper();
 private:

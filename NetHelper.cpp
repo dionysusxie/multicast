@@ -96,6 +96,12 @@ vector<string> NetHelper::getIP4Address(const std::string& net_interface) {
     return ret_ip4_addr;
 }
 
+string NetHelper::getIP4AddrOfDefInterface() {
+    vector<string> addr = NetHelper::getIP4Address(NetHelper::getDefaultNetInterface());
+    BOOST_ASSERT_MSG(!(addr.empty()), "Can't get any IP4 addr of default net interface!");
+    return addr[0];
+}
+
 NetHelper::NetHelper() {
     // TODO Auto-generated constructor stub
 
