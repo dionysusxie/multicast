@@ -23,8 +23,8 @@ int sd;
 int datalen;
 char databuf[1024];
 
-const uint16_t PORT = 4321;
-const char *MULTICAST_ADDR = "226.1.1.1";
+const uint16_t PORT = 8649;
+const char *MULTICAST_ADDR = "239.2.11.71";
 
 
 int main(int argc, char *argv[]) {

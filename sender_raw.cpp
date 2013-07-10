@@ -33,8 +33,8 @@ int sd;
 char databuf[1024] = "Multicast test message lol!";
 const int datalen = sizeof(databuf);
 
-const char*     MULTICAST_ADDR = "226.1.1.1";
-const uint16_t  MULTICAST_PORT = 4321;
+const char*     MULTICAST_ADDR = "239.2.11.71";
+const uint16_t  MULTICAST_PORT = 8649;
 
 
 int main(int argc, char *argv[]) {
