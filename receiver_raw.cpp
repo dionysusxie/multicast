@@ -98,13 +98,16 @@ int main(int argc, char *argv[]) {
     /* Read from the socket. */
     while (true) {
         datalen = sizeof(databuf);
-        if (read(sd, databuf, datalen) < 0) {
+        const ssize_t num_read = read(sd, databuf, datalen);
+        if (num_read < 0) {
             perror("Reading datagram message error");
             close(sd);
             exit(1);
         }
         else {
-            printf("[received] %s\n", databuf);
+            const string str_read(databuf, num_read);
+            cout << "[received] Length = " << num_read << "; Content = {" << str_read
+                 << "}" << endl;
         }
     }
 
